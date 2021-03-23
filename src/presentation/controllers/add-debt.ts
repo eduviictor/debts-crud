@@ -1,11 +1,13 @@
 import { AddDebt } from '@/domain/usecases/add-debt';
-import { badRequest, serverError, ok } from '../helpers/http';
+import { RequestUserById } from '@/domain/usecases/request-user-by-id';
+import { badRequest, serverError, ok, notFound } from '../helpers/http';
 import { Controller } from '../protocols/controller';
 import { HttpResponse, HttpRequest } from '../protocols/http';
 import { Validation } from '../protocols/validation';
 
 export class AddDebtController implements Controller {
   constructor(
+    private readonly requestUserById: RequestUserById,
     private readonly addDebt: AddDebt,
     private readonly validation: Validation
   ) {}
@@ -19,6 +21,12 @@ export class AddDebtController implements Controller {
       }
 
       const { user_id, reason, date, amount } = request.body;
+
+      const user = await this.requestUserById.getById(user_id);
+
+      if (!user) {
+        return notFound('User not found');
+      }
 
       const debt = await this.addDebt.add({ user_id, reason, date, amount });
 

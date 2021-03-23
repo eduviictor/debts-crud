@@ -13,8 +13,8 @@ describe('Debt Mongo Repository', () => {
   });
 
   beforeEach(async () => {
-    const planetCollection = await MongoHelper.getCollection('debts');
-    await planetCollection.deleteMany({});
+    const debtColletion = await MongoHelper.getCollection('debts');
+    await debtColletion.deleteMany({});
   });
 
   const makeSut = (): DebtMongoRepository => {
@@ -25,19 +25,19 @@ describe('Debt Mongo Repository', () => {
     test('Should create an debt on success', async () => {
       const sut = makeSut();
 
-      const planet = await sut.add({
+      const debt = await sut.add({
         user_id: 1,
         amount: '15.99',
         date,
         reason: 'any_reason',
       });
 
-      expect(planet).toBeTruthy();
-      expect(planet.id).toBeTruthy();
-      expect(planet.user_id).toBe(1);
-      expect(planet.amount).toBe('15.99');
-      expect(planet.date).toBe(date);
-      expect(planet.reason).toBe('any_reason');
+      expect(debt).toBeTruthy();
+      expect(debt.id).toBeTruthy();
+      expect(debt.user_id).toBe(1);
+      expect(debt.amount).toBe('15.99');
+      expect(debt.date).toBe(date);
+      expect(debt.reason).toBe('any_reason');
     });
   });
 });

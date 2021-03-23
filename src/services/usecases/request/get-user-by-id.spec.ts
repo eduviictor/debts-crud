@@ -30,7 +30,7 @@ const makeSut = (): SutTypes => {
   };
 };
 
-describe('GetPlanetsById Usecase', () => {
+describe('GetUserById Usecase', () => {
   test('Should call GetUserById', async () => {
     const { sut, userRequestStub } = makeSut();
     const getByIdSpy = jest.spyOn(userRequestStub, 'getById');
@@ -43,9 +43,9 @@ describe('GetPlanetsById Usecase', () => {
   test('Should GetUserById return an user with success', async () => {
     const { sut } = makeSut();
 
-    const planets = await sut.getById(1);
+    const user = await sut.getById(1);
 
-    expect(planets).toEqual({
+    expect(user).toEqual({
       id: 1,
       name: 'valid_name',
     });
