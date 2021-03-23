@@ -1,5 +1,4 @@
 import { AddDebt } from '@/domain/usecases/add-debt';
-import { MissingParamError } from '../errors/missing-param-error';
 import { badRequest, serverError, ok } from '../helpers/http';
 import { Controller } from '../protocols/controller';
 import { HttpResponse, HttpRequest } from '../protocols/http';
@@ -13,14 +12,6 @@ export class AddDebtController implements Controller {
 
   async handle(request: HttpRequest): Promise<HttpResponse> {
     try {
-      const requiredFields = ['user_id', 'reason', 'date', 'amount'];
-
-      for (const field of requiredFields) {
-        if (!request.body[field]) {
-          return badRequest(new MissingParamError(field));
-        }
-      }
-
       const error = this.validation.validate(request.body);
 
       if (error) {

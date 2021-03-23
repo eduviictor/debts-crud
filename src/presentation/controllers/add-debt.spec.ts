@@ -4,7 +4,6 @@ import { ServerError } from '../errors/server-error';
 import { AddDebt, AddDebtModel } from '@/domain/usecases/add-debt';
 import { AddDebtController } from './add-debt';
 import { Validation } from '../protocols/validation';
-import { InvalidParamError } from '../errors/invalid-param-error';
 
 const date = new Date();
 
@@ -52,62 +51,6 @@ const makeSut = (): SutTypes => {
 };
 
 describe('AddDebt Controller', () => {
-  test('Should return 400 if no user_id is provided', async () => {
-    const { sut } = makeSut();
-    const httpRequest = {
-      body: {
-        reason: 'any_reason',
-        date,
-        amount: '15.00',
-      },
-    };
-    const httpResponse = await sut.handle(httpRequest);
-    expect(httpResponse.statusCode).toBe(400);
-    expect(httpResponse.body).toEqual(new MissingParamError('user_id'));
-  });
-
-  test('Should return 400 if no reason is provided', async () => {
-    const { sut } = makeSut();
-    const httpRequest = {
-      body: {
-        user_id: 1,
-        date,
-        amount: '15.00',
-      },
-    };
-    const httpResponse = await sut.handle(httpRequest);
-    expect(httpResponse.statusCode).toBe(400);
-    expect(httpResponse.body).toEqual(new MissingParamError('reason'));
-  });
-
-  test('Should return 400 if no date is provided', async () => {
-    const { sut } = makeSut();
-    const httpRequest = {
-      body: {
-        user_id: 1,
-        reason: 'any_reason',
-        amount: '15.00',
-      },
-    };
-    const httpResponse = await sut.handle(httpRequest);
-    expect(httpResponse.statusCode).toBe(400);
-    expect(httpResponse.body).toEqual(new MissingParamError('date'));
-  });
-
-  test('Should return 400 if no amount is provided', async () => {
-    const { sut } = makeSut();
-    const httpRequest = {
-      body: {
-        user_id: 1,
-        reason: 'any_reason',
-        date,
-      },
-    };
-    const httpResponse = await sut.handle(httpRequest);
-    expect(httpResponse.statusCode).toBe(400);
-    expect(httpResponse.body).toEqual(new MissingParamError('amount'));
-  });
-
   test('Should call AddDebt with correct values', async () => {
     const { sut, addDebtStub } = makeSut();
     const addSpy = jest.spyOn(addDebtStub, 'add');
