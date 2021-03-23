@@ -8,5 +8,5 @@ export interface AddDebtModel {
 }
 
 export interface AddDebt {
-  add: (planet: AddDebtModel) => Promise<DebtModel>;
+  add: (debt: AddDebtModel) => Promise<DebtModel>;
 }
