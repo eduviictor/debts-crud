@@ -1,6 +1,6 @@
 import { DebtModel } from '@/domain/models/debt';
 import { AddDebtModel } from '@/domain/usecases/add-debt';
-import { AddDebtRepository } from '../protocols/db/db-add-debt-repository';
+import { AddDebtRepository } from '../../protocols/db/db-add-debt-repository';
 import { DbAddDebt } from './db-add-debt';
 
 const date = new Date();

@@ -1,6 +1,6 @@
 import { DebtModel } from '@/domain/models/debt';
 import { AddDebt, AddDebtModel } from '@/domain/usecases/add-debt';
-import { AddDebtRepository } from '../protocols/db/db-add-debt-repository';
+import { AddDebtRepository } from '../../protocols/db/db-add-debt-repository';
 
 export class DbAddDebt implements AddDebt {
   constructor(private readonly addDebtRepository: AddDebtRepository) {}
