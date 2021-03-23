@@ -1,9 +1,10 @@
-import { MissingParamError } from '@/presentation/errors/missing-param-error';
 import { DebtModel } from '@/domain/models/debt';
 import { ServerError } from '../errors/server-error';
 import { AddDebt, AddDebtModel } from '@/domain/usecases/add-debt';
 import { AddDebtController } from './add-debt';
 import { Validation } from '../protocols/validation';
+import { UserResponse } from '@/infra/protocols/json-placeholder';
+import { RequestUserById } from '@/domain/usecases/request-user-by-id';
 
 const date = new Date();
 
@@ -33,20 +34,40 @@ const makeValidation = (): Validation => {
   return new ValidationStub();
 };
 
+const makeGetUserById = (): RequestUserById => {
+  class GetUserByIdStub implements RequestUserById {
+    async getById(id: number): Promise<UserResponse> {
+      const fakeUser = {
+        id: 99,
+      };
+
+      return await new Promise((resolve) => resolve(fakeUser));
+    }
+  }
+  return new GetUserByIdStub();
+};
+
 interface SutTypes {
   sut: AddDebtController;
   addDebtStub: AddDebt;
   validationStub: Validation;
+  getUserByIdStub: RequestUserById;
 }
 
 const makeSut = (): SutTypes => {
   const addDebtStub = makeAddDebt();
   const validationStub = makeValidation();
-  const sut = new AddDebtController(addDebtStub, validationStub);
+  const getUserByIdStub = makeGetUserById();
+  const sut = new AddDebtController(
+    getUserByIdStub,
+    addDebtStub,
+    validationStub
+  );
   return {
     sut,
     addDebtStub,
     validationStub,
+    getUserByIdStub,
   };
 };
 
@@ -161,5 +182,27 @@ describe('AddDebt Controller', () => {
     const httpResponse = await sut.handle(httpRequest);
 
     expect(httpResponse.statusCode).toBe(400);
+  });
+
+  test('Should return 404 if user not found', async () => {
+    const { sut, getUserByIdStub } = makeSut();
+    const getUSerByIdSpy = jest
+      .spyOn(getUserByIdStub, 'getById')
+      .mockImplementationOnce(() => {
+        return null;
+      });
+
+    const httpRequest = {
+      body: {
+        user_id: 99,
+        reason: 'valid_reason',
+        date,
+        amount: 'invalid_amount',
+      },
+    };
+
+    const httpResponse = await sut.handle(httpRequest);
+
+    expect(httpResponse.statusCode).toBe(404);
   });
 });
