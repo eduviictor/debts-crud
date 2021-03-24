@@ -1,15 +1,10 @@
 import axios from 'axios';
 import { AxiosAdapter } from './axios-adapter';
+import MockAdapter from 'axios-mock-adapter';
 
-jest.mock('axios', () => ({
-  async get(): Promise<any> {
-    return await new Promise((resolve) =>
-      resolve({
-        data: 'success',
-      })
-    );
-  },
-}));
+const mockAxios = new MockAdapter(axios);
+
+mockAxios.onGet().reply(200, 'success');
 
 const makeSut = (): AxiosAdapter => new AxiosAdapter();
 
@@ -41,14 +36,20 @@ describe('Axios Adapter', () => {
     expect(data).toBe('success');
   });
 
-  test('Should throw if axios throws', async () => {
+  test('Should return 404 if resource not found', async () => {
     const sut = makeSut();
-    jest
-      .spyOn(axios, 'get')
-      .mockReturnValueOnce(
-        new Promise((resolve, reject) => reject(new Error()))
-      );
-    const promise = sut.get('any_url', { headers: {} });
-    await expect(promise).rejects.toThrow();
+
+    const url = 'any_url';
+    const headers = {
+      Authorization: 'any_authorization',
+    };
+
+    const mockAxios = new MockAdapter(axios);
+
+    mockAxios.onGet(url).replyOnce(404);
+
+    const data = await sut.get(url, headers);
+
+    expect(data).toBeNull();
   });
 });
