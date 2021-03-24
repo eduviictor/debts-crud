@@ -1,6 +1,6 @@
 require('dotenv').config();
 
 export const JsonPlaceHolderConfig = {
-  url: process.env.SWAPI_URL || 'https://jsonplaceholder.typicode.com',
+  url: process.env.JSON_PLACEHOLDER || 'https://jsonplaceholder.typicode.com',
   headers: {},
 };
