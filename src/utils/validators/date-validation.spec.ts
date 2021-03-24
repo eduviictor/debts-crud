@@ -1,5 +1,5 @@
 import { DateValidator } from '../protocols/date-validator';
-import { DateValidationAdapter } from './date-validation-adapter';
+import { DateValidation } from './date-validation';
 import faker from 'faker';
 import { InvalidParamError } from '@/presentation/errors/invalid-param-error';
 
@@ -15,20 +15,20 @@ const makeDateValidator = (): DateValidator => {
 };
 
 type SutTypes = {
-  sut: DateValidationAdapter;
+  sut: DateValidation;
   dateValidatorStub: DateValidator;
 };
 
 const makeSut = (): SutTypes => {
   const dateValidatorStub = makeDateValidator();
-  const sut = new DateValidationAdapter(field, dateValidatorStub);
+  const sut = new DateValidation(field, dateValidatorStub);
   return {
     sut,
     dateValidatorStub,
   };
 };
 
-describe('DateValidator Adapter', () => {
+describe('DateValidation', () => {
   test('Should return false if validator returns false', () => {
     const { sut, dateValidatorStub } = makeSut();
     const date = faker.date.past();

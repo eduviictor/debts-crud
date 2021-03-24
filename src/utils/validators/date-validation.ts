@@ -2,7 +2,7 @@ import { InvalidParamError } from '@/presentation/errors/invalid-param-error';
 import { Validation } from '@/presentation/protocols/validation';
 import { DateValidator } from '@/utils/protocols/date-validator';
 
-export class DateValidationAdapter implements Validation {
+export class DateValidation implements Validation {
   constructor(
     private readonly fieldName: string,
     private readonly dateValidator: DateValidator
