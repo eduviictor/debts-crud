@@ -5,8 +5,14 @@ export class AxiosAdapter implements ApiRequest {
   constructor() {}
 
   async get(url: string, headers: any): Promise<any> {
-    const response = await axios.get(url, { headers });
+    try {
+      const response = await axios.get(url, { headers });
 
-    return response.data;
+      return response.data;
+    } catch (err) {
+      if (err?.response?.status === 404) {
+        return null;
+      }
+    }
   }
 }
