@@ -45,12 +45,12 @@ describe('DbGetDebtById Usecase', () => {
     expect(getByIdSpy).toHaveBeenCalledTimes(1);
   });
 
-  test('Should GetDebtByIdRepository return an planet with success', async () => {
+  test('Should GetDebtByIdRepository return an debt with success', async () => {
     const { sut } = makeSut();
 
-    const planets = await sut.getById('valid_id');
+    const debt = await sut.getById('valid_id');
 
-    expect(planets).toEqual({
+    expect(debt).toEqual({
       id: 'valid_id',
       user_id: 1,
       reason: 'any_reason',

@@ -34,7 +34,7 @@ describe('Debt Routes', () => {
       .expect(200);
   });
 
-  test('Should return a planet based on its id', async () => {
+  test('Should return a debt based on its id', async () => {
     const debtCollection = await MongoHelper.getCollection('debts');
     const debtInDb = await debtCollection.insertOne({
       user_id: 1,
