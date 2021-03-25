@@ -1,5 +1,5 @@
 import { DebtModel } from '@/domain/models/debt';
 
 export interface GetDebtsByUserRepository {
-  getByUser: (id: string) => Promise<DebtModel[]>;
+  getByUser: (id: number) => Promise<DebtModel[]>;
 }

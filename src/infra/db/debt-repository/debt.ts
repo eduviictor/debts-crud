@@ -2,11 +2,15 @@ import { DebtModel } from '@/domain/models/debt';
 import { AddDebtModel } from '@/domain/usecases/add-debt';
 import { AddDebtRepository } from '@/services/protocols/db/db-add-debt-repository';
 import { GetDebtByIdRepository } from '@/services/protocols/db/db-get-debt-by-id-repository';
+import { GetDebtsByUserRepository } from '@/services/protocols/db/db-get-debts-by-user-repository';
 import { ObjectId } from 'bson';
 import { MongoHelper } from '../helpers/mongo-helper';
 
 export class DebtMongoRepository
-  implements AddDebtRepository, GetDebtByIdRepository {
+  implements
+    AddDebtRepository,
+    GetDebtByIdRepository,
+    GetDebtsByUserRepository {
   async add(debtData: AddDebtModel): Promise<DebtModel> {
     const debtCollection = await MongoHelper.getCollection('debts');
     const result = await debtCollection.insertOne(debtData);
@@ -23,5 +27,16 @@ export class DebtMongoRepository
       return null;
     }
     return MongoHelper.map(result);
+  }
+
+  async getByUser(id: number): Promise<DebtModel[]> {
+    const debtCollection = await MongoHelper.getCollection('debts');
+    const result = await debtCollection
+      .find({
+        user_id: Number(id),
+      })
+      .toArray();
+
+    return MongoHelper.mapCollection(result);
   }
 }
