@@ -1,4 +1,5 @@
 import { MongoHelper } from '@/infra/db/helpers/mongo-helper';
+import { ObjectID, ObjectId } from 'bson';
 import request from 'supertest';
 import app from '../config/app';
 
@@ -89,5 +90,25 @@ describe('Debt Routes', () => {
           id: String(secondDebt.ops[0]._id),
         },
       ]);
+  });
+
+  test('Should be able to delete a user', async () => {
+    const debtCollection = await MongoHelper.getCollection('debts');
+    const debtInDb = await debtCollection.insertOne({
+      user_id: 1,
+      reason: 'any_reason',
+      date: String(date),
+      amount: '15.99',
+    });
+
+    const id = debtInDb.ops[0]._id;
+
+    await request(app).delete(`/debts/${id}`).expect(200);
+
+    const existsDebtInDb = await debtCollection.findOne({
+      _id: new ObjectId(id),
+    });
+
+    expect(existsDebtInDb).toBeFalsy();
   });
 });
