@@ -40,7 +40,7 @@ describe('DbGetDebtsByUser Usecase', () => {
     const { sut, getDebtsByUserRepositoryStub } = makeSut();
     const getByIdSpy = jest.spyOn(getDebtsByUserRepositoryStub, 'getByUser');
 
-    await sut.getByUser('any_id');
+    await sut.getByUser(1);
 
     expect(getByIdSpy).toHaveBeenCalledTimes(1);
   });
@@ -48,7 +48,7 @@ describe('DbGetDebtsByUser Usecase', () => {
   test('Should GetDebtsByUserRepository return an debt with success', async () => {
     const { sut } = makeSut();
 
-    const debts = await sut.getByUser('valid_id');
+    const debts = await sut.getByUser(1);
 
     expect(debts).toEqual([
       {
@@ -69,7 +69,7 @@ describe('DbGetDebtsByUser Usecase', () => {
         new Promise((resolve, reject) => reject(new Error()))
       );
 
-    const promise = sut.getByUser('any_id');
+    const promise = sut.getByUser(1);
 
     await expect(promise).rejects.toThrow();
   });
