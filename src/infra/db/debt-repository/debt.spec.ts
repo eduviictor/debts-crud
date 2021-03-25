@@ -112,4 +112,22 @@ describe('Debt Mongo Repository', () => {
       expect(debts.length).toBe(0);
     });
   });
+
+  describe('delete()', () => {
+    test('Should be able to delete a debt', async () => {
+      const sut = makeSut();
+
+      const { id } = await sut.add({
+        user_id: 1,
+        amount: '15.99',
+        date,
+        reason: 'any_reason',
+      });
+
+      await sut.delete(id);
+      const debt = await sut.getById(id);
+
+      expect(debt).toBeFalsy();
+    });
+  });
 });
