@@ -101,5 +101,15 @@ describe('Debt Mongo Repository', () => {
       expect(String(debts[0].date)).toBe(String(date));
       expect(debts[0].reason).toBe('any_reason');
     });
+
+    test('Should return a empty list of debts', async () => {
+      const sut = makeSut();
+
+      const debts = await sut.getByUser(2);
+
+      expect(debts).toBeTruthy();
+      expect(Array.isArray(debts)).toBe(true);
+      expect(debts.length).toBe(0);
+    });
   });
 });
