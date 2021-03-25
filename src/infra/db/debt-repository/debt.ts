@@ -14,10 +14,11 @@ export class DebtMongoRepository
   }
 
   async getById(id: string): Promise<DebtModel> {
-    const planetCollection = await MongoHelper.getCollection('debts');
-    const result = await planetCollection.findOne({
+    const debtCollection = await MongoHelper.getCollection('debts');
+    const result = await debtCollection.findOne({
       _id: new ObjectId(id),
     });
+
     if (!result) {
       return null;
     }

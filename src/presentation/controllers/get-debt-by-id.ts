@@ -15,6 +15,7 @@ export class GetDebtByIdController implements Controller {
         params: { id },
       } = request;
 
+      console.log('result');
       if (!id) {
         return badRequest(new MissingParamError('id'));
       }
