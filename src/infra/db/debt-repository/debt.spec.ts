@@ -130,4 +130,31 @@ describe('Debt Mongo Repository', () => {
       expect(debt).toBeFalsy();
     });
   });
+
+  describe('update()', () => {
+    test('Should be able to update an debt on success', async () => {
+      const sut = makeSut();
+
+      const debt = await sut.add({
+        user_id: 1,
+        amount: '15.99',
+        date,
+        reason: 'any_reason',
+      });
+
+      const debtUpdated = await sut.update(debt.id, {
+        user_id: 2,
+        amount: '16.00',
+        date,
+        reason: 'any_reason',
+      });
+
+      expect(debtUpdated).toBeTruthy();
+      expect(debtUpdated.id).toBeTruthy();
+      expect(debtUpdated.user_id).toBe(2);
+      expect(debtUpdated.amount).toBe('16.00');
+      expect(String(debtUpdated.date)).toBe(String(debt.date));
+      expect(debtUpdated.reason).toBe(debt.reason);
+    });
+  });
 });
