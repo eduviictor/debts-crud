@@ -1,13 +1,9 @@
 import { MongoHelper } from '@/infra/db/helpers/mongo-helper';
-import { ObjectID, ObjectId } from 'bson';
+import { ObjectId } from 'bson';
 import request from 'supertest';
 import app from '../config/app';
 
-const date = new Date().toLocaleDateString('en-CA', {
-  day: '2-digit',
-  year: 'numeric',
-  month: '2-digit',
-});
+const date = '2021-02-18';
 
 describe('Debt Routes', () => {
   beforeAll(async () => {
