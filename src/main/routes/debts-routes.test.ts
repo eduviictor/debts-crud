@@ -54,4 +54,40 @@ describe('Debt Routes', () => {
         id: String(id),
       });
   });
+
+  test('Should return a list of debts based on its user', async () => {
+    const debtCollection = await MongoHelper.getCollection('debts');
+    const firstDebt = await debtCollection.insertOne({
+      user_id: 1,
+      reason: 'any_reason',
+      date: String(date),
+      amount: '15.99',
+    });
+
+    const secondDebt = await debtCollection.insertOne({
+      user_id: 1,
+      reason: 'any_reason',
+      date: String(date),
+      amount: '15.99',
+    });
+
+    await request(app)
+      .get(`/debts/clients/1`)
+      .expect([
+        {
+          user_id: 1,
+          reason: 'any_reason',
+          date: String(date),
+          amount: '15.99',
+          id: String(firstDebt.ops[0]._id),
+        },
+        {
+          user_id: 1,
+          reason: 'any_reason',
+          date: String(date),
+          amount: '15.99',
+          id: String(secondDebt.ops[0]._id),
+        },
+      ]);
+  });
 });
