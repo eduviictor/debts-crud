@@ -6,11 +6,13 @@ import { MissingParamError } from '../errors/missing-param-error';
 import { serverError, ok, badRequest, notFound } from '../helpers/http';
 import { Controller } from '../protocols/controller';
 import { HttpResponse, HttpRequest } from '../protocols/http';
+import { Validation } from '../protocols/validation';
 
 export class UpdateDebtController implements Controller {
   constructor(
     private readonly getDebtById: GetDebtById,
-    private readonly updateDebt: UpdateDebt
+    private readonly updateDebt: UpdateDebt,
+    private readonly validation: Validation
   ) {}
 
   async handle(request: HttpRequest): Promise<HttpResponse> {
@@ -32,6 +34,14 @@ export class UpdateDebtController implements Controller {
 
       if (!debtExists) {
         return notFound('Id is not found');
+      }
+
+      if (body.date) {
+        const error = this.validation.validate(request.body);
+
+        if (error) {
+          return badRequest(error);
+        }
       }
 
       const debt = await this.updateDebt.update(id, body);

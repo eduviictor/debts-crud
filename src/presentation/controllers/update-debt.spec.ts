@@ -5,6 +5,7 @@ import FakeObjectId from 'bson-objectid';
 import { InvalidParamError } from '../errors/invalid-param-error';
 import { MissingParamError } from '../errors/missing-param-error';
 import { ServerError } from '../errors/server-error';
+import { Validation } from '../protocols/validation';
 import { UpdateDebtController } from './update-debt';
 
 const validId = new FakeObjectId();
@@ -44,20 +45,36 @@ const makeUpdateDebt = (): UpdateDebt => {
   return new UpdateDebtStub();
 };
 
+const makeValidation = (): Validation => {
+  class ValidationStub implements Validation {
+    validate(input: any): Error {
+      return;
+    }
+  }
+  return new ValidationStub();
+};
+
 interface SutTypes {
   sut: UpdateDebtController;
   getDebtByIdStub: GetDebtById;
   updateDebtStub: UpdateDebt;
+  validationStub: Validation;
 }
 
 const makeSut = (): SutTypes => {
   const getDebtByIdStub = makeGetDebtById();
   const updateDebtStub = makeUpdateDebt();
-  const sut = new UpdateDebtController(getDebtByIdStub, updateDebtStub);
+  const validationStub = makeValidation();
+  const sut = new UpdateDebtController(
+    getDebtByIdStub,
+    updateDebtStub,
+    validationStub
+  );
   return {
     sut,
     getDebtByIdStub,
     updateDebtStub,
+    validationStub,
   };
 };
 
@@ -141,5 +158,25 @@ describe('UpdateDebt Controller', () => {
     };
     const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse.statusCode).toBe(404);
+  });
+
+  test('Should return 400 if Validation returns an error', async () => {
+    const { sut, validationStub } = makeSut();
+    const validationSpy = jest
+      .spyOn(validationStub, 'validate')
+      .mockImplementationOnce(() => {
+        return new Error();
+      });
+
+    const httpRequest = {
+      body: {
+        date: 'any_date',
+      },
+      params: { id: String(validId) },
+    };
+
+    const httpResponse = await sut.handle(httpRequest);
+
+    expect(httpResponse.statusCode).toBe(400);
   });
 });
