@@ -6,7 +6,7 @@ const date = new Date();
 
 const makeGetDebtsByUserRepository = (): GetDebtsByUserRepository => {
   class GetDebtsUserRepositoryStub implements GetDebtsByUserRepository {
-    async getByUser(id: string): Promise<DebtModel[]> {
+    async getByUser(id: number): Promise<DebtModel[]> {
       const fakeDebt = {
         id: 'valid_id',
         user_id: 1,
