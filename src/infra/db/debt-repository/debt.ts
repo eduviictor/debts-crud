@@ -1,6 +1,7 @@
 import { DebtModel } from '@/domain/models/debt';
 import { AddDebtModel } from '@/domain/usecases/add-debt';
 import { AddDebtRepository } from '@/services/protocols/db/db-add-debt-repository';
+import { DeleteDebtRepository } from '@/services/protocols/db/db-delete-debt-repository';
 import { GetDebtByIdRepository } from '@/services/protocols/db/db-get-debt-by-id-repository';
 import { GetDebtsByUserRepository } from '@/services/protocols/db/db-get-debts-by-user-repository';
 import { ObjectId } from 'bson';
@@ -10,7 +11,8 @@ export class DebtMongoRepository
   implements
     AddDebtRepository,
     GetDebtByIdRepository,
-    GetDebtsByUserRepository {
+    GetDebtsByUserRepository,
+    DeleteDebtRepository {
   async add(debtData: AddDebtModel): Promise<DebtModel> {
     const debtCollection = await MongoHelper.getCollection('debts');
     const result = await debtCollection.insertOne(debtData);
@@ -38,5 +40,12 @@ export class DebtMongoRepository
       .toArray();
 
     return MongoHelper.mapCollection(result);
+  }
+
+  async delete(id: string): Promise<void> {
+    const debtCollection = await MongoHelper.getCollection('debts');
+    await debtCollection.deleteOne({
+      _id: new ObjectId(id),
+    });
   }
 }
