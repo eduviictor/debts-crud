@@ -11,5 +11,5 @@ export default (router: Router): void => {
   router.get('/debts/:id', adaptRoute(makeGetDebtByIdController()));
   router.delete('/debts/:id', adaptRoute(makeDeleteDebtController()));
   router.put('/debts/:id', adaptRoute(makeUpdateDebtController()));
-  router.get('/debts/clients/:id', adaptRoute(makeGetDebtsByUserController()));
+  router.get('/debts/users/:id', adaptRoute(makeGetDebtsByUserController()));
 };

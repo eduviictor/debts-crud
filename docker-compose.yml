@@ -12,20 +12,20 @@ services:
     restart: always
     ports:
       - '27017:27017'
-  # api:
-  #   container_name: api
-  #   image: node:12
-  #   working_dir: /usr/src/debts-crud
-  #   restart: always
-  #   command: bash -c "yarn --only=prod && yarn start"
-  #   environment:
-  #     MONGO_URL: ${MONGO_URL}
-  #   volumes:
-  #     - ./dist/:/usr/src/debts-crud/dist/
-  #     - ./package.json:/usr/src/debts-crud/package.json
-  #     - ./tsconfig-paths-bootstrap.js:/usr/src/debts-crud/tsconfig-paths-bootstrap.js
-  #     - ./tsconfig.json:/usr/src/debts-crud/tsconfig.json
-  #   ports:
-  #     - '3000:3000'
-  #   links:
-  #     - mongo
+  # # api:
+  # #   container_name: api
+  # #   image: node:12
+  # #   working_dir: /usr/src/debts-crud
+  # #   restart: always
+  # #   command: bash -c "yarn --only=prod && yarn start"
+  # #   environment:
+  # #     MONGO_URL: ${MONGO_URL}
+  # #   volumes:
+  # #     - ./dist/:/usr/src/debts-crud/dist/
+  # #     - ./package.json:/usr/src/debts-crud/package.json
+  # #     - ./tsconfig-paths-bootstrap.js:/usr/src/debts-crud/tsconfig-paths-bootstrap.js
+  # #     - ./tsconfig.json:/usr/src/debts-crud/tsconfig.json
+  # #   ports:
+  # #     - '3000:3000'
+  # #   links:
+  # #     - mongo
