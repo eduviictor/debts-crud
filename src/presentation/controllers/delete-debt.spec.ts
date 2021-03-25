@@ -6,7 +6,6 @@ import { InvalidParamError } from '../errors/invalid-param-error';
 import { MissingParamError } from '../errors/missing-param-error';
 import { ServerError } from '../errors/server-error';
 import { DeleteDebtController } from './delete-debt';
-import { GetDebtByIdController } from './get-debt-by-id';
 
 const validId = new FakeObjectId();
 const date = new Date();
