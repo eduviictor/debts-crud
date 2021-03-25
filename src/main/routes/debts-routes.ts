@@ -3,9 +3,11 @@ import { makeAdDebtController } from '../factories/add-debt';
 import { Router } from 'express';
 import { makeGetDebtByIdController } from '../factories/get-debt-by-id';
 import { makeGetDebtsByUserController } from '../factories/get-debts-by-user';
+import { makeDeleteDebtController } from '../factories/delete-debt';
 
 export default (router: Router): void => {
   router.post('/debts', adaptRoute(makeAdDebtController()));
   router.get('/debts/:id', adaptRoute(makeGetDebtByIdController()));
+  router.delete('/debts/:id', adaptRoute(makeDeleteDebtController()));
   router.get('/debts/clients/:id', adaptRoute(makeGetDebtsByUserController()));
 };
