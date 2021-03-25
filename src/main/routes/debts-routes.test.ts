@@ -111,4 +111,32 @@ describe('Debt Routes', () => {
 
     expect(existsDebtInDb).toBeFalsy();
   });
+
+  test('Should be able to update an debt', async () => {
+    const debtCollection = await MongoHelper.getCollection('debts');
+    const debtInDb = await debtCollection.insertOne({
+      user_id: 1,
+      reason: 'any_reason',
+      date: String(date),
+      amount: '15.99',
+    });
+
+    const id = debtInDb.ops[0]._id;
+
+    await request(app)
+      .put(`/debts/${id}`)
+      .send({
+        user_id: 2,
+        reason: 'any_reason_updated',
+        date: String(date),
+        amount: '16.00',
+      })
+      .expect({
+        id: String(id),
+        user_id: 2,
+        reason: 'any_reason_updated',
+        date: String(date),
+        amount: '16.00',
+      });
+  });
 });
