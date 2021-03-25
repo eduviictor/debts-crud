@@ -1,6 +1,8 @@
 import { MongoHelper } from '../helpers/mongo-helper';
 import { DebtMongoRepository } from './debt';
+import FakeObjectId from 'bson-objectid';
 
+const fakeId = new FakeObjectId();
 const date = new Date();
 
 describe('Debt Mongo Repository', () => {
@@ -38,6 +40,43 @@ describe('Debt Mongo Repository', () => {
       expect(debt.amount).toBe('15.99');
       expect(debt.date).toBe(date);
       expect(debt.reason).toBe('any_reason');
+    });
+  });
+
+  describe('getById()', () => {
+    test('Should return an debt with success', async () => {
+      const sut = makeSut();
+
+      const { id } = await sut.add({
+        user_id: 1,
+        amount: '15.99',
+        date,
+        reason: 'any_reason',
+      });
+
+      const debt = await sut.getById(id);
+
+      expect(debt).toBeTruthy();
+      expect(String(debt.id)).toBe(String(id));
+      expect(debt.user_id).toBe(1);
+      expect(debt.amount).toBe('15.99');
+      expect(String(debt.date)).toBe(String(date));
+      expect(debt.reason).toBe('any_reason');
+    });
+
+    test('Should return null if there is no debt with that id', async () => {
+      const sut = makeSut();
+
+      await sut.add({
+        user_id: 1,
+        amount: '15.99',
+        date,
+        reason: 'any_reason',
+      });
+
+      const debt = await sut.getById(String(fakeId));
+
+      expect(debt).toBeFalsy();
     });
   });
 });
