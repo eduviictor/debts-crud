@@ -79,4 +79,27 @@ describe('Debt Mongo Repository', () => {
       expect(debt).toBeFalsy();
     });
   });
+
+  describe('getByUser()', () => {
+    test('Should return a list of debts successfully', async () => {
+      const sut = makeSut();
+
+      await sut.add({
+        user_id: 1,
+        amount: '15.99',
+        date,
+        reason: 'any_reason',
+      });
+
+      const debts = await sut.getByUser(1);
+
+      expect(debts).toBeTruthy();
+      expect(Array.isArray(debts)).toBe(true);
+      expect(debts[0].id).toBeTruthy();
+      expect(debts[0].user_id).toBe(1);
+      expect(debts[0].amount).toBe('15.99');
+      expect(String(debts[0].date)).toBe(String(date));
+      expect(debts[0].reason).toBe('any_reason');
+    });
+  });
 });
