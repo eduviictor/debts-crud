@@ -73,7 +73,7 @@ describe('Debt Routes', () => {
     });
 
     await request(app)
-      .get(`/debts/clients/1`)
+      .get(`/debts/users/1`)
       .expect([
         {
           user_id: 1,

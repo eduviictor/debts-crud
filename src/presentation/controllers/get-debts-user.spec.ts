@@ -12,7 +12,7 @@ const date = new Date();
 
 const makeGetDebtsByUser = (): GetDebtsByUser => {
   class GetDebtsByUserStub implements GetDebtsByUser {
-    async getByUser(id: string): Promise<DebtModel[]> {
+    async getByUser(id: number): Promise<DebtModel[]> {
       const fakeDebt = {
         id: String(validId),
         reason: 'any_reason',
