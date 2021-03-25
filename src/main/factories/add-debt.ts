@@ -7,7 +7,7 @@ import { AxiosAdapter } from '@/utils/http/axios/axios-adapter';
 import { makeAddDebtValidation } from './add-debt-validation';
 import { GetUserById } from '@/services/usecases/request/get-user-by-id';
 
-export const makeAdDebtController = (): Controller => {
+export const makeAddDebtController = (): Controller => {
   const axiosAdapter = new AxiosAdapter();
   const debtRepository = new DebtMongoRepository();
   const jsonPlaceHolder = new JsonPlaceHolderAdapter(axiosAdapter);

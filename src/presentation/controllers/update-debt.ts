@@ -9,7 +9,7 @@ import { HttpResponse, HttpRequest } from '../protocols/http';
 
 export class UpdateDebtController implements Controller {
   constructor(
-    private readonly getdebtById: GetDebtById,
+    private readonly getDebtById: GetDebtById,
     private readonly updateDebt: UpdateDebt
   ) {}
 
@@ -28,7 +28,7 @@ export class UpdateDebtController implements Controller {
         return badRequest(new InvalidParamError('id'));
       }
 
-      const debtExists = await this.getdebtById.getById(id);
+      const debtExists = await this.getDebtById.getById(id);
 
       if (!debtExists) {
         return notFound('Id is not found');
