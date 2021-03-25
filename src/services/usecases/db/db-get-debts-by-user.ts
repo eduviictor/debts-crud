@@ -7,7 +7,7 @@ export class DbGetDebtsByUser implements GetDebtsByUser {
     private readonly getDebtsByIdRepository: GetDebtsByUserRepository
   ) {}
 
-  async getByUser(id: string): Promise<DebtModel[]> {
+  async getByUser(id: number): Promise<DebtModel[]> {
     return await this.getDebtsByIdRepository.getByUser(id);
   }
 }
